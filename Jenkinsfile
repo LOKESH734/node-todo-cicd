@@ -39,8 +39,21 @@ pipeline {
         }
 
         stage('Deploy') {
+            when{
+                branch 'main'
+            }
+            agent{
+                docker{
+                    image node:18-alpine
+                    reuseNode True
+                }
+            }
             steps {
-                echo 'Deploying broo'
+                sh'''
+                npm install netlify-cli
+                echo "deploying to netlify'
+                netlify deploy --dir=build --prod
+                '''
             }
         }
     }
