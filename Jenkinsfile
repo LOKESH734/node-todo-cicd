@@ -15,7 +15,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing broo'
+                sh '''
+                npm test
+                '''
             }
         }
 
