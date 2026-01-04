@@ -1,34 +1,27 @@
 pipeline{
-    agent { label 'dev-server' }
-    
+    agent any{
+        stage('checkout')
+        {
+            scm checkout
+        }
+    }
     stages{
-        stage("Code Clone"){
+        stage('BUild')
+        {
             steps{
-                echo "Code Clone Stage"
-                git url: "https://github.com/LondheShubham153/node-todo-cicd.git", branch: "master"
+                echo 'Building brooo'
             }
         }
-        stage("Code Build & Test"){
+        stage('Test')
+        {
             steps{
-                echo "Code Build Stage"
-                sh "docker build -t node-app ."
+                echo 'Testing broo'
             }
         }
-        stage("Push To DockerHub"){
+        stage('Deploy')
+        {
             steps{
-                withCredentials([usernamePassword(
-                    credentialsId:"dockerHubCreds",
-                    usernameVariable:"dockerHubUser", 
-                    passwordVariable:"dockerHubPass")]){
-                sh 'echo $dockerHubPass | docker login -u $dockerHubUser --password-stdin'
-                sh "docker image tag node-app:latest ${env.dockerHubUser}/node-app:latest"
-                sh "docker push ${env.dockerHubUser}/node-app:latest"
-                }
-            }
-        }
-        stage("Deploy"){
-            steps{
-                sh "docker compose down && docker compose up -d --build"
+                echo 'Deploying broo'
             }
         }
     }
