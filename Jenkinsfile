@@ -1,10 +1,10 @@
 pipeline{
-    agent any{
+    agent any
         stage('checkout')
         {
             scm checkout
         }
-    }
+    
     stages{
         stage('BUild')
         {
